@@ -18,7 +18,7 @@ router.post("/", protectRoute, async (req, res) => {
       title,
       caption,
       rating,
-      image: imageURl,
+      image: imageUrl,
       user: req.user._id,
     });
 
