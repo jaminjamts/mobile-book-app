@@ -4,7 +4,7 @@ import "dotenv/config";
 
 const job = new cron.CronJob("*/14 * * * * ", function () {
   https
-    .get("process.env.API_URL", (res) => {
+    .get(process.env.API_URL, (res) => {
       if (res.statusCode === 200) console.log("API is working");
       else console.log("API is down");
     })

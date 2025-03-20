@@ -2,6 +2,7 @@ import express from "express";
 import protectRoute from "../middleware/auth.middleware.js";
 import BookModel from "../models/Book.js";
 import cloudinary from "../lib/cloudinary.js";
+import { log } from "console";
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.post("/", protectRoute, async (req, res) => {
     });
   }
 });
-router.get("/", async (_, res) => {
+router.get("/", async (req, res) => {
   try {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
@@ -39,6 +40,7 @@ router.get("/", async (_, res) => {
       .skip(skip)
       .limit(limit)
       .populate("user", "username profileImage");
+    const totalBooks = await BookModel.countDocuments();
     res.status(200).json({
       books,
       currentPage: page,
