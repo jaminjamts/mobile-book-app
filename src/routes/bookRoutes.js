@@ -2,7 +2,6 @@ import express from "express";
 import protectRoute from "../middleware/auth.middleware.js";
 import BookModel from "../models/Book.js";
 import cloudinary from "../lib/cloudinary.js";
-import { log } from "console";
 
 const router = express.Router();
 
@@ -12,17 +11,17 @@ router.post("/", protectRoute, async (req, res) => {
     if (!title || !caption || !rating || !image) {
       return res.status(400).json({ message: "Please fill in all fields" });
     }
+
     const uploadResponse = await cloudinary.uploader.upload(image);
     const imageUrl = uploadResponse.secure_url;
 
-    const newBook = await BookModel.create({
+    const newBook = new BookModel({
       title,
       caption,
       rating,
       image: imageUrl,
-      user: req.user._id,
     });
-
+    await newBook.save();
     res.status(200).json(newBook);
   } catch (error) {
     res.status(400).json({
