@@ -4,11 +4,8 @@ import bookRoutes from "./routes/bookRoutes.js";
 import { connectDB } from "./lib/db.js";
 import "dotenv/config";
 
-import job from "./lib/cron.js";
-
 const server = express();
 
-job.start();
 server.use(express.json());
 server.use("/api/auth", authRoutes);
 server.use("/api/books", bookRoutes);
